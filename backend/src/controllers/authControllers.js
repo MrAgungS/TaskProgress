@@ -22,7 +22,7 @@ export const register = async (req, res) => {
             email : user.email
         }, res);
     } catch (error) {
-        console.log(error);
+        console.log("error bro", error);
         response(500,"Register Error", null, res);
     }
 };
@@ -51,7 +51,7 @@ export const login = async (req, res) => {
 
         await refreshToken.create({
             token: refreshTokenValue,
-            UsersId: users.id,
+            user_id: users.id,
             expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
         })
         
@@ -62,7 +62,7 @@ export const login = async (req, res) => {
 
     } catch (error) {
         console.log(error);
-        response(500,"Register Error", null, res);
+        response(500,"Login Error", null, res);
     }
 };
 

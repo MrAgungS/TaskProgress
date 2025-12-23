@@ -59,19 +59,16 @@ export const getTaskById = async (req, res) => {
     }
 }
 export const updateTask = async (req, res) => {
-    try {
-        const where = { id: req.params.id };
-        
-        if (req.user.role !== "admin") {
-            where.user_id = req.user.id;
-        }
-        
-        const tasks = await Tasks.findOne({ where });
+    try {        
+        const tasks = await Tasks.findOne({ where:{
+            id: req.params.id,
+            user_id: req.user.id
+        } });
         if (!tasks) {
             return response(404,"Tasks not find", null, res )
         }
         await tasks.update(req.body);
-        res.json(task);
+        res.json(tasks);
     } catch (error) {
         console.log(error);
         response(500,"Update task Error", null, res); 
@@ -79,11 +76,15 @@ export const updateTask = async (req, res) => {
 }
 export const deleteTask = async (req, res) => {
     try {
-        const deleted = await Tasks.destory({ where : {id: req.params.id} });
+        const where = { id: req.params.id };
+        if (req.user.role !== "admin") {
+        where.user_id = req.user.id;
+        }
+        const deleted = await Tasks.destroy({ where : {id: req.params.id} });
         if (!deleted) {
             response(404,"Tasks not find", null, res)
         }
-        response(200,"Tasks get delete by Admin", null, res)
+        response(200,"Tasks deleted successfully", null, res)
     } catch (error) {
         console.log(error);
         response(500,"Deletae task Error", null, res); 

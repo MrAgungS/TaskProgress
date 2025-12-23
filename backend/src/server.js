@@ -8,9 +8,12 @@ import Sequelize from "./config/db.js";
 const app = express();
 const PORT = process.env.PORT;
 
+// This enables Express to handle JSON data sent in the request body
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.use("api/auth", authRouters);
-app.use("api/task", taskRouters);
+app.use("/api/auth", authRouters);
+app.use("/api/task", taskRouters);
 
 // Just for development
 // (async () => {
