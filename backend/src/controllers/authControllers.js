@@ -40,24 +40,40 @@ export const login = async (req, res) => {
         if (!match) {
             return response(401, "Wrong Password", null , res)
         }
-
+        // Access Token
         const accessToken = jwt.sign(
             {id:users.id, email:users.email, role:users.role},
             process.env.JWT_ACCESS,
             {expiresIn: "15m"}
         )
-
+        // Refresh Token
         const refreshTokenValue = crypto.randomBytes(64).toString("hex");
-
         await refreshToken.create({
             token: refreshTokenValue,
             user_id: users.id,
             expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
         })
+
+        res.cookie("accessToken", accessToken , {
+            httpOnly:true,
+            secure:false, //true if HTTPS
+            sameSite: "lax",
+            maxAge: 15 * 60 * 1000 // 15m
+        })
+        res.cookie("refreshToken", refreshTokenValue, {
+            httpOnly: true,
+            secure: false,
+            sameSite: "lax",
+            maxAge: 7 * 24 * 60 * 60 * 1000 // 7d
+        });
+
         
         return response(200, "Login Success", {
-            accessToken,
-            refreshToken: refreshTokenValue,
+            user: {
+                id: users.id,
+                email: users.email,
+                role: users.role
+            }
         }, res);
 
     } catch (error) {
@@ -106,12 +122,26 @@ export const refresh = async (req, res) => {
 
 export const logout = async (req, res) => {
     try {
-        const {refreshToken : token } = req.body;
+        const token = req.cookies.refreshToken;
+        if (token) {
+            await refreshToken.destroy({
+                where: {token}
+            })
+        }
+        // Delete cookies
+        res.clearCookie("accessToken", {
+            httpOnly: true,
+            sameSite: "lax",
+            secure: false
+        });
 
-        await refreshToken.destroy({
-            where : { token }
-        })
-        response(200, "LogOut Success", null, res)
+        res.clearCookie("refreshToken", {
+            httpOnly: true,
+            sameSite: "lax",
+            secure: false
+        });
+
+        return response(200, "Logout Success", null, res);
     } catch (error) {
         console.log(error);
         response(500, "LogOut Error", null, res);
