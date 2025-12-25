@@ -6,6 +6,7 @@ export const register = async(payload) => {
 }
 export const login = async(payload) => {
     const res = await api.post("auth/login", payload);
+    
     return res.data
 }
 export const refreshToken = async(payload) => {

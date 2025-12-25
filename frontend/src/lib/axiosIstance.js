@@ -2,8 +2,8 @@ import { refreshToken } from "@/services/auth.services"
 import axios from "axios"
 
 const api = axios.create({
-    baseURL: "/api/",
-    withCredentials: true
+    baseURL: "api/",
+    withCredentials: true,
 })
 api.interceptors.response.use(
     (response) => response,
