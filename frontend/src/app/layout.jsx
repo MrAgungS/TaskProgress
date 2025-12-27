@@ -1,6 +1,5 @@
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
-import MenuBar from "@/components/MenuBar";
 import NavBar from "@/components/NavBar";
 
 
@@ -14,7 +13,6 @@ export default function RootLayout({ children }) {
         <main className="flex-1 px-4 py-6 md:px-8 lg:px-12">
           {children}
         </main>
-        {/* <MenuBar /> */}
         </div>
       </body>
     </html>
