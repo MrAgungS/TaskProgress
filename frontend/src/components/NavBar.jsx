@@ -31,11 +31,6 @@ export default function NavBar() {
                                 <CircleUser className="size-5" />
                             </Link>
                         </li>
-                        <li>
-                            <Link href="/tasks" className="tooltip" >
-                                <ClipboardPen className="size-5" />
-                            </Link>
-                        </li>
                     </ul>
                 </div>
 

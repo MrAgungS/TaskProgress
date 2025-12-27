@@ -84,41 +84,47 @@ export const login = async (req, res) => {
 
 export const refresh = async (req, res) => {
     try {
-        const { refreshToken : token } = req.body;
+        const token = req.cookies.refreshToken;
 
         if (!token) {
-            return response(401, "Refresh token tidak ada", null, res);
+        return response(401, "Refresh token tidak ada", null, res);
         }
 
         const storedToken = await refreshToken.findOne({
-            where: { token },
+        where: { token },
         });
 
         if (!storedToken) {
-            return response(403, "Refresh token tidak valid", null, res);
+        return response(403, "Refresh token tidak valid", null, res);
         }
 
         if (storedToken.expiresAt < new Date()) {
-            return response(403, "Refresh token expired", null, res);
+        return response(403, "Refresh token expired", null, res);
         }
 
         const users = await Users.findByPk(storedToken.UsersId);
 
         const newAccessToken = jwt.sign(
-            { id: users.id, email: users.email },
-            process.env.JWT_ACCESS,
-            { expiresIn: "15m" }
+        { id: users.id, email: users.email },
+        process.env.JWT_ACCESS,
+        { expiresIn: "15m" }
         );
 
-        return response(200, "Access token refreshed", {
-            accessToken: newAccessToken,
-        }, res);
+        // 🔥 SET ACCESS TOKEN KE COOKIE
+        res.cookie("accessToken", newAccessToken, {
+        httpOnly: true,
+        sameSite: "lax",
+        secure: false,
+        });
+
+        return response(200, "Access token refreshed", null, res);
 
     } catch (error) {
-        console.log(error);
-        response(500, "Refresh Error", null, res);
+        console.log("REFRESH ERROR:", error);
+        return response(500, "Refresh Error", null, res);
     }
 };
+
 
 export const logout = async (req, res) => {
     try {

@@ -1,22 +1,22 @@
 import api from "@/lib/axiosIstance";
 
-export const getTasks = async(payload) =>{
-    const res = await api.get("task/", payload);
+export const getTasks = async() =>{
+    const res = await api.get("/tasks");
     return res.data
 }
-export const createTask = async(payload) =>{
-    const res = await api.post("task/", payload);
+export const createTask = async() =>{
+    const res = await api.post("/tasks");
     return res.data
 }
-export const getTaskById = async(payload) =>{
-    const res = await api.get("task/:id", payload);
+export const getTaskById = async() =>{
+    const res = await api.get("/tasks/:id" );
     return res.data
 }
-export const updateTask = async(payload) =>{
-    const res = await api.put("task/:id", payload);
+export const updateTask = async() =>{
+    const res = await api.put("/tasks/:id");
     return res.data
 }
-export const deleteTask = async(payload) =>{
-    const res = await api.delete("task/:id", payload);
+export const deleteTask = async() =>{
+    const res = await api.delete("/tasks/:id");
     return res.data
 }
