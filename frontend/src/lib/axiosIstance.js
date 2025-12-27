@@ -4,6 +4,9 @@ import { refreshToken } from "@/services/auth.services";
 const api = axios.create({
   baseURL: "http://localhost:5000/api",
   withCredentials: true,
+  headers: {
+    "Content-Type": "application/json"
+  }
 });
 
 let isRefreshing = false;
@@ -28,7 +31,7 @@ api.interceptors.response.use(
   async error => {
     const originalRequest = error.config;
 
-    // ⛔ kalau error dari refresh sendiri → STOP
+    // ⛔ If the error originates from the refresh process itself, stop the execution.
     if (originalRequest.url.includes("/auth/refresh")) {
       handleLogout();
       return Promise.reject(error);
@@ -49,7 +52,6 @@ api.interceptors.response.use(
       await refreshToken();
       return api(originalRequest);
     } catch (err) {
-      // 🔥 INI KUNCI UTAMA
       handleLogout();
       return Promise.reject(err);
     }
