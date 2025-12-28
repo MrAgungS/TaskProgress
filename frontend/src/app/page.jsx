@@ -71,7 +71,6 @@ export default function Home() {
                 >
                     <li>✅ Secure JWT-based authentication</li>
                     <li>📝 Easy task creation & management</li>
-                    <li>⏱️ Deadline & progress tracking</li>
                     <li>📊 task statuses (To Do, Progress, Done)</li>
                 </motion.ul>
 
@@ -95,7 +94,6 @@ export default function Home() {
                 >
                     <li>Create an account or log in</li>
                     <li>Add and organize your tasks</li>
-                    <li>Track progress and deadlines</li>
                     <li>Complete tasks efficiently</li>
                 </motion.ol>
 
@@ -117,7 +115,7 @@ export default function Home() {
                         visible: { opacity: 1, y: 0 },
                     }}
                 >
-                    Join TaskFlow and take control of your productivity with a modern task management solution built for developers and teams.
+                    Join TaskProgress and take control of your productivity with a modern task management solution built for developers and teams.
                 </motion.p>
 
 
