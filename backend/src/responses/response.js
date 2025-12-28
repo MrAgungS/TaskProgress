@@ -1,6 +1,6 @@
-const response = ( statusCode, message, data,  res ) => {
-    res.status(statusCode).json({
-        success: statusCode < 400,
+const response = ( status, message, data,  res ) => {
+    res.status(status).json({
+        success: status >= 200 && status < 300,
         message,
         data,
     });

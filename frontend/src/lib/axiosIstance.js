@@ -27,20 +27,27 @@ const handleLogout = () => {
 };
 
 api.interceptors.response.use(
-  res => res,
-  async error => {
+  (response) => response,
+  async (error) => {
     const originalRequest = error.config;
 
-    // ⛔ If the error originates from the refresh process itself, stop the execution.
+    // ⛔ if not 401 → STOP
+    if (error.response?.status !== 401) {
+      return Promise.reject(error);
+    }
+
+    // ⛔ DELETE NEVER ALLOW RETRY
+    if (originalRequest.method === "delete") {
+      return Promise.reject(error);
+    }
+
+    // ⛔ refresh token failed → logout
     if (originalRequest.url.includes("/auth/refresh")) {
       handleLogout();
       return Promise.reject(error);
     }
 
-    if (error.response?.status !== 401) {
-      return Promise.reject(error);
-    }
-
+    // ⛔ prevent infinite loops
     if (originalRequest._retry) {
       handleLogout();
       return Promise.reject(error);
@@ -50,13 +57,14 @@ api.interceptors.response.use(
 
     try {
       await refreshToken();
-      return api(originalRequest);
+      return api(originalRequest); // only GET / POST
     } catch (err) {
       handleLogout();
       return Promise.reject(err);
     }
   }
 );
+
 
 
 export default api;

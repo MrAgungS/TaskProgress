@@ -45,7 +45,7 @@ export const getTaskById = async (req, res) => {
         const where = {id: req.params.id}
         if (req.user.role !== "admin") {
             where.user_id = req.user.id;
-        }
+        }   
         
         const tasks = await Tasks.findOne({ where });
         
@@ -75,18 +75,32 @@ export const updateTask = async (req, res) => {
     }
 }
 export const deleteTask = async (req, res) => {
-    try {
-        const where = { id: req.params.id };
-        if (req.user.role !== "admin") {
-        where.user_id = req.user.id;
-        }
-        const deleted = await Tasks.destroy({ where : {id: req.params.id} });
-        if (!deleted) {
-            response(404,"Tasks not find", null, res)
-        }
-        response(200,"Tasks deleted successfully", null, res)
-    } catch (error) {
-        console.log(error);
-        response(500,"Deletae task Error", null, res); 
+  try {
+    const { id } = req.params;
+
+    const task = await Tasks.findOne({
+      where: { id, user_id: req.user.id },
+    });
+
+    if (!task) {
+      return res.status(404).json({
+        success: false,
+        message: "Task not found",
+      });
     }
-}
+
+    await task.destroy();
+
+    return res.status(200).json({
+      success: true,
+      message: "Task deleted",
+    });
+
+  } catch (err) {
+    console.error("DELETE TASK ERROR:", err);
+    return res.status(500).json({
+      success: false,
+      message: "Delete task error",
+    });
+  }
+};
