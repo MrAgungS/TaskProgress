@@ -8,11 +8,11 @@ export const login = async (payload) => {
   return api.post("/auth/login", payload);
 };
 export const refreshToken = async() => {
-    return axios.post(
-        "http://localhost:5000/api/auth/refresh",
-        {},
-        { withCredentials: true }
-    );
+  return axios.post(
+      "http://localhost:5000/api/auth/refresh",
+      {},
+      { withCredentials: true }
+  );
 }
 export const logout = async () => {
   try {

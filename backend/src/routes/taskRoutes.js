@@ -7,8 +7,8 @@ const router = express.Router();
 
 router.get("/", authMiddleware, roleMiddleware(["user", "admin"]), getTasks);
 router.post("/", authMiddleware, roleMiddleware(["user", "admin"]), createTask);
-router.get("/:id",authMiddleware, roleMiddleware(["admin"]), getTaskById);
-router.put("/:id", updateTask);
-router.delete("/:id", deleteTask);
+router.get("/:id",authMiddleware, roleMiddleware(["admin", "user"]), getTaskById);
+router.put("/:id", authMiddleware, updateTask);
+router.delete("/:id",authMiddleware, roleMiddleware(["user"]), deleteTask);
 
 export default router
