@@ -52,6 +52,38 @@ It helps users manage tasks efficiently with secure authentication, task trackin
 * DaisyUi
 * motion
 
+# 🐳 Docker Setup (Recommended)
+
+## 📦 Prerequisites
+* Docker
+* Docker Compose
+
+## ▶️ Run with Docker Compose
+```bash
+docker-compose up --build
+```
+or 
+```bash
+docker-compose up -d --build
+```
+
+## 🌐 Services
+| Service | URL |
+|------|------------|
+| Frontend | http://localhost:3000 |
+| Backend | http://localhost:5000 |
+| Database | localhost:3306 |
+
+## 🛑 Stop Containers
+```bash
+docker-compose down
+```
+
+## ♻️ Rebuild Containers
+```bash
+docker-compose down
+docker-compose up --build
+```
 
 # ⚙️ Backend (Express.js)
 

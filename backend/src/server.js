@@ -2,13 +2,19 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser"
 
+import { loadEnv } from "./config/env.js";
 import authRouters from "./routes/authRoutes.js";
 import taskRouters from "./routes/taskRoutes.js";
 import rateLimiter from "./middleware/rateLimiter.js";
+import Sequelize from "./config/db.js";
+
+import "./models/association.js"
+
+loadEnv();
 
 
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5000;
 
 app.use(cors({
     origin: 'http://localhost:3000',
@@ -27,15 +33,8 @@ app.use("/api/tasks", taskRouters);
 
 
 
-// Just for development
-// (async () => {
-//   try {
-//     await Sequelize.sync({ alter: true });
-//     console.log("DB synced");
-//   } catch (err) {
-//     console.error("Sync error:", err);
-//   }
-// })();
+await Sequelize.authenticate();
+console.log("DB connected");
 
 
 

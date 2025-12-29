@@ -1,13 +1,12 @@
 import bcrypt from "bcrypt";
-import  dotenv  from "dotenv";
 import jwt from "jsonwebtoken";
 import crypto from "crypto"
 
 import { Users, refreshToken } from "../models/association.js";
 import response from "../responses/response.js";
+import { loadEnv } from "../config/env.js";
 
-
-dotenv.config();
+loadEnv
 
 export const register = async (req, res) => {    
     try {

@@ -7,6 +7,9 @@ import { getTaskById, updateTask } from "@/services/task.services";
 export default function EditTask() {
   const { id } = useParams();
   const router = useRouter();
+  const taskId = Number(id);
+
+
   console.log("TASK ID:", id);
   const [form, setForm] = useState({
     title: "",
@@ -18,6 +21,7 @@ export default function EditTask() {
     const fetchTask = async () => {
       try {
         const res = await getTaskById(id);
+        // console.log("PARAM FROM useParams:", id);
         setForm(res.data);
       } catch (err) {
         console.log(err);
@@ -32,13 +36,17 @@ export default function EditTask() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // console.log("PUT URL:", `/tasks/${id}`);
+
     try {
-      await updateTask(id, form);
+      await updateTask(Number(id), form);
       router.push("/dashboard");
     } catch (err) {
       console.log(err);
     }
   };
+
 
   return (
     <div className="max-w-xl mx-auto p-6 space-y-4">

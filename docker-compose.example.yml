@@ -1,0 +1,45 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: taskprogress_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    container_name: taskprogress_api
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./backend/.env.docker
+    depends_on:
+      mysql:
+        condition: service_healthy
+    command: >
+      sh -c "/wait-for-mysql.sh &&
+      npx sequelize-cli db:migrate &&
+      npm run start"
+
+  frontend:
+    build: ./frontend
+    container_name: taskprogress_web
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:

@@ -3,7 +3,7 @@ import { DataTypes } from "sequelize";
 
 import Sequelize from "../config/db.js";
 
-const refreshToken = Sequelize.define("refreshToken", {
+const refreshToken = Sequelize.define("refreshTokens", {
     token: {
         type: DataTypes.TEXT,
         allowNull: false
@@ -13,9 +13,11 @@ const refreshToken = Sequelize.define("refreshToken", {
         allowNull: false
     },
     expiresAt: {
-    type: DataTypes.DATE,
-    allowNull: false,
-  },
+        type: DataTypes.DATE,
+        allowNull: false,
+    },
+},{
+    tableName:"refreshTokens"
 })
 
 

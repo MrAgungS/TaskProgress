@@ -29,9 +29,8 @@ const Tasks = Sequelize.define("tasks", {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    created_at: {
-        type: DataTypes.TIME
-    }
+},{
+    timestamps: false
 })
 
 

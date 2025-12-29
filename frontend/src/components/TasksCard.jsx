@@ -15,7 +15,7 @@ export default function TaskCard({ Tasks, onDelete }) {
   if (!Tasks) return null; // 🔥 safety guard
 
   const handleEdit = () => {
-    router.push(`/tasks/$[id]/edit`);
+    router.push(`/tasks/${Tasks.id}/edit`);
   };
 
   const handleDelete = async () => {
