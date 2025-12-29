@@ -59,21 +59,38 @@ export const getTaskById = async (req, res) => {
     }
 }
 export const updateTask = async (req, res) => {
-    try {        
-        const tasks = await Tasks.findOne({ where:{
-            id: req.params.id,
-            user_id: req.user.id
-        } });
-        if (!tasks) {
-            return response(404,"Tasks not find", null, res )
-        }
-        await tasks.update(req.body);
-        res.json(tasks);
-    } catch (error) {
-        console.log(error);
-        response(500,"Update task Error", null, res); 
+  try {
+    const taskId = Number(req.params.id);
+
+    if (isNaN(taskId)) {
+      return response(400, "Invalid task id", null, res);
     }
-}
+
+    const task = await Tasks.findOne({
+      where: {
+        id: taskId,
+        user_id: req.user.id,
+      },
+    });
+
+    if (!task) {
+      return response(404, "Task not found", null, res);
+    }
+
+    await task.update({
+      title: req.body.title,
+      description: req.body.description,
+      status: req.body.status,
+      priority: req.body.priority,
+      due_date: req.body.due_date,
+    });
+
+    response(200, "Task updated", task, res);
+  } catch (error) {
+    console.log(error);
+    response(500, "Update task error", null, res);
+  }
+};
 export const deleteTask = async (req, res) => {
   try {
     const { id } = req.params;

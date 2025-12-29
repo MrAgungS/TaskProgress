@@ -23,8 +23,11 @@ const Users = Sequelize.define("users", {
         type: DataTypes.ENUM("user","admin"),
         defaultValue: "user"
     },
-    created_at: {
-        type: DataTypes.TIME
+    createdAt: {
+        type: DataTypes.DATE
+    },
+    updatedAt: {
+        type: DataTypes.DATE
     }
 })
 
