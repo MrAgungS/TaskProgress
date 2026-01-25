@@ -1,33 +1,33 @@
-# 🗂️ TaskProgress
+#  TaskProgress
 
 TaskProgress is a fullstack task management application built with **Next.js** and **Express.js**.  
 It helps users manage tasks efficiently with secure authentication, task tracking, and role-based access control.
 
 ---
 
-## 🚀 Features
+##  Features
 
-- 🔐 **Authentication**
+- **Authentication**
   - Register & Login
   - JWT-based authentication
   - Password hashing with bcrypt
 
-- 📝 **Task Management**
+- **Task Management**
   - Create, read, update, delete tasks
   - Task status: To Do, In Progress, Done
 
-- 👤 **Role-Based Access Control**
+- **Role-Based Access Control**
   - User & Admin roles
   - Users can only access their own tasks
   - Admin can manage all tasks
 
-- 📊 **Modern UI**
+- **Modern UI**
   - Responsive layout
   - Clean dashboard interface
 
 ---
 
-## 🧱 Tech Stack
+## Tech Stack
 
 ### Backend (Express.js)
 
@@ -52,13 +52,13 @@ It helps users manage tasks efficiently with secure authentication, task trackin
 * DaisyUi
 * motion
 
-# 🐳 Docker Setup (Recommended)
+#  Docker Setup (Recommended)
 
-## 📦 Prerequisites
+## Prerequisites
 * Docker
 * Docker Compose
 
-## ▶️ Run with Docker Compose
+## Run with Docker Compose
 ```bash
 docker-compose up --build
 ```
@@ -67,38 +67,38 @@ or
 docker-compose up -d --build
 ```
 
-## 🌐 Services
+## Services
 | Service | URL |
 |------|------------|
 | Frontend | http://localhost:3000 |
 | Backend | http://localhost:5000 |
 | Database | localhost:3306 |
 
-## 🛑 Stop Containers
+## Stop Containers
 ```bash
 docker-compose down
 ```
 
-## ♻️ Rebuild Containers
+## Rebuild Containers
 ```bash
 docker-compose down
 docker-compose up --build
 ```
 
-# ⚙️ Backend (Express.js)
+# Backend (Express.js)
 
-## 📦 Installation
+## Installation
 
 ```bash
 cd backend
 npm install
 ```
 
-## 🔑 Environment Variables
+## Environment Variables
 
 Create a `.env` file in the `backend` folder:
 
-## ▶️ Run the Server
+## Run the Server
 
 ```bash
 npm run dev
@@ -112,16 +112,16 @@ The server will run at:
 http://localhost:5000
 ```
 
-# 🎨 Frontend (Next.js)
+# Frontend (Next.js)
 
-## 📦 Installation
+## Installation
 
 ```bash
 cd frontend
 npm install
 ```
 
-## ▶️ Run the Application
+## Run the Application
 
 ```bash
 npm run dev
@@ -133,8 +133,8 @@ The app will run at:
 http://localhost:3000
 ```
 
-## ✨ Author
+## Author
 
 Created by **MrAgungS**
 
-Feel free to fork, use, and improve this project 🚀
+Feel free to fork, use, and improve this project 
