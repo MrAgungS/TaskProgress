@@ -1,5 +1,8 @@
-#  TaskProgress
+# IMPORTANT
+The main focus is backend architecture and API design.
+Frontend design is not the priority and is implemented as best as possible to support testing and usage of the backend.
 
+#  TaskProgress
 TaskProgress is a fullstack task management application built with **Next.js** and **Express.js**.  
 It helps users manage tasks efficiently with secure authentication, task tracking, and role-based access control.
 
