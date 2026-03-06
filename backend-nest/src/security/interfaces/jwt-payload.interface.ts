@@ -1,4 +1,4 @@
 export interface JwtPayload {
-  sub: number; // sesuaikan dengan tipe id di Prisma
+  sub: number; // adjust according to the ID type in Prisma
   email: string;
 }

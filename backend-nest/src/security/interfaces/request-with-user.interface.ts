@@ -1,4 +1,3 @@
-// security/interfaces/request-with-user.interface.ts
 import { Request } from 'express';
 import { Role } from 'generated/prisma/enums';
 
