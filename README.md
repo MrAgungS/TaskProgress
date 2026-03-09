@@ -3,6 +3,10 @@
 This project is currently undergoing a migration from Express to NestJS.  
 It is still under consideration whether Express will be retained after the migration is completed.
 
+```
+The main focus is backend architecture and API design.
+Frontend design is not the priority and is implemented as best as possible to support testing and usage of the backend.
+```
 # TaskProgress
 
 TaskProgress is a fullstack task management application built with **Next.js** and **Express.js**.  
