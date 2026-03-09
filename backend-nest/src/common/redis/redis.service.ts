@@ -1,26 +1,16 @@
-import {
-  Inject,
-  Injectable,
-  OnModuleDestroy,
-  OnModuleInit,
-} from '@nestjs/common';
+import { InjectRedis } from '@nestjs-modules/ioredis';
+import { Inject, Injectable } from '@nestjs/common';
 import Redis from 'ioredis';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
 
 @Injectable()
-export class RedisService implements OnModuleInit, OnModuleDestroy {
-  private redis: Redis;
-
+export class RedisService {
   constructor(
     @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: Logger,
-  ) {}
-
-  onModuleInit() {
-    this.redis = new Redis({
-      host: process.env.REDIS_HOST,
-      port: Number(process.env.REDIS_PORT),
-    });
+    @InjectRedis() private readonly redis: Redis,
+  ) {
+    // Log connection events from the injected Redis instance
     this.redis.on('connect', () => {
       this.logger.info('Redis connected');
     });
@@ -30,8 +20,19 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
     });
   }
 
-  async onModuleDestroy() {
-    await this.redis.quit();
-    this.logger.info('Redis connection closed');
+  async set(key: string, value: string, ttl?: number): Promise<void> {
+    if (ttl) {
+      await this.redis.set(key, value, 'EX', ttl);
+    } else {
+      await this.redis.set(key, value);
+    }
+  }
+
+  async get(key: string): Promise<string | null> {
+    return this.redis.get(key);
+  }
+
+  async del(key: string): Promise<void> {
+    await this.redis.del(key);
   }
 }

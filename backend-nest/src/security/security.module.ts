@@ -15,7 +15,7 @@ import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
     // Register JWT module with a shared secret and default token expiry
     JwtModule.register({
       secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '7d' },
+      signOptions: { expiresIn: '15m' },
     }),
     // Configure throttler (rate limiter) with Redis as the backing storage
     ThrottlerModule.forRootAsync({

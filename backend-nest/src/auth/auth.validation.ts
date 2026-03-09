@@ -11,4 +11,9 @@ export class AuthValidation {
     email: z.string().email().min(1).max(100),
     password: z.string().min(1).max(100),
   });
+
+  static readonly LOGOUT: ZodType = z.object({
+    user_id: z.number().int().positive(),
+    access_token: z.string().min(1),
+  });
 }

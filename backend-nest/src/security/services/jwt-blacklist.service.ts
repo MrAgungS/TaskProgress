@@ -1,13 +1,12 @@
-import { InjectRedis } from '@nestjs-modules/ioredis';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import Redis from 'ioredis';
+import { RedisService } from 'src/common/redis/redis.service';
 
 // Used to invalidate tokens on logout before they naturally expire.
 @Injectable()
 export class JwtBlacklistService {
   constructor(
-    @InjectRedis() private readonly redis: Redis,
+    private redisService: RedisService,
     private readonly jwt: JwtService,
   ) {}
 
@@ -19,14 +18,14 @@ export class JwtBlacklistService {
     const ttl = decoded.exp - now;
 
     if (ttl > 0) {
-      await this.redis.set(`blacklist:${token}`, '1', 'EX', ttl);
+      await this.redisService.set(`blacklist:${token}`, '1', ttl);
     }
   }
 
   // Checks whether a given token is blacklisted.
   // Returns true if the token is found in Redis (i.e. has been revoked).
   async IsBlackListed(token: string): Promise<boolean> {
-    const result = await this.redis.get(`blacklist:${token}`);
+    const result = await this.redisService.get(`blacklist:${token}`);
     return result !== null;
   }
 }
