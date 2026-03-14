@@ -1,4 +1,4 @@
-import { UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PrismaService } from 'src/common/prisma/prisma.service';
@@ -8,6 +8,7 @@ import { Request } from 'express';
 
 // Main Passport strategy for validating JWT access tokens on protected routes.
 // Runs on every request that passes through JwtAuthGuard.
+@Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     private prisma: PrismaService,
