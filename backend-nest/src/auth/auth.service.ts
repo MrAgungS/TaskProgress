@@ -27,6 +27,7 @@ export class AuthService {
     private blacklist: JwtBlacklistService,
   ) {}
 
+  // Generates a short-lived access token (15 minutes)
   private generateAccessToken(user_id: number, email: string) {
     return this.jwtService.sign(
       { sub: user_id, email },
@@ -34,6 +35,7 @@ export class AuthService {
     );
   }
 
+  // Generates a long-lived refresh token (7 days)
   private generateRefreshToken(user_id: number, email: string) {
     return this.jwtService.sign(
       { sub: user_id, email },
@@ -41,6 +43,7 @@ export class AuthService {
     );
   }
 
+  // Storing a hash instead of the raw token adds an extra layer of security.
   private async saveRefreshToken(user_id: number, refresh_token: string) {
     const hashed = await bcrypt.hash(refresh_token, 10);
     await this.redisService.set(
@@ -50,6 +53,8 @@ export class AuthService {
     );
   }
 
+  // Registers a new user after validating input and checking for duplicate emails.
+  // Password is hashed before being stored in the database.
   async register(request: RegisterUserDto) {
     this.logger.debug('Registering user with email: %s', request.email);
     const registerRequest = this.validationService.validate(
@@ -75,6 +80,8 @@ export class AuthService {
     };
   }
 
+  // Validates user credentials and returns a new access + refresh token pair.
+  // Refresh token is saved to Redis for future validation.
   async login(request: LoginUserDto) {
     this.logger.debug('Logging in user with email: %s', request.email);
     const loginRequest = this.validationService.validate(
@@ -99,6 +106,8 @@ export class AuthService {
     };
   }
 
+  // Issues a new access + refresh token pair using a valid refresh token.
+  // Implements token rotation — old refresh token is replaced with a new one.
   async refresh(refresh_token: string) {
     let payload: { sub: number };
     try {
@@ -121,6 +130,7 @@ export class AuthService {
     });
     if (!user) throw new ForbiddenException('User not found');
 
+    // Generate and save new token pair (token rotation)
     const newAccessToken = this.generateAccessToken(user.id, user.email);
     const newRefreshToken = this.generateRefreshToken(user.id, user.email);
     await this.saveRefreshToken(user.id, newRefreshToken);
@@ -131,6 +141,8 @@ export class AuthService {
     };
   }
 
+  // Logs out the user by blacklisting the access token and deleting the refresh token from Redis.
+  // After logout, both tokens are immediately invalidated.
   async logout(request: LogoutDto) {
     this.logger.debug('Logging out user with ID: %s', request.user_id);
     const logoutRequest = this.validationService.validate(
