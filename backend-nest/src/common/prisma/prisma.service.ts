@@ -12,16 +12,15 @@ export class PrismaService
     @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: Logger,
   ) {
     super({
-      accelerateUrl: process.env.DATABASE_URL!,
       log: [
         { emit: 'event', level: 'error' },
         { emit: 'event', level: 'warn' },
         { emit: 'event', level: 'info' },
         { emit: 'event', level: 'query' },
       ],
-    });
+    } as any);
   }
-  onModuleInit() {
+  async onModuleInit() {
     this.$on('error' as never, (e) => {
       this.logger.error(e);
     });
@@ -34,5 +33,7 @@ export class PrismaService
     this.$on('query' as never, (e) => {
       this.logger.info(e);
     });
+
+    await this.$connect();
   }
 }

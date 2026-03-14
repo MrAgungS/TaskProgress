@@ -8,6 +8,8 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { ThrottlerRedisStorage } from './storage/throttler-redis.storage';
 import { JwtBlacklistService } from './services/jwt-blacklist.service';
 import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
+import { getRedisConnectionToken } from '@nestjs-modules/ioredis';
+import Redis from 'ioredis';
 
 @Global()
 @Module({
@@ -19,13 +21,13 @@ import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
     }),
     // Configure throttler (rate limiter) with Redis as the backing storage
     ThrottlerModule.forRootAsync({
-      inject: [ThrottlerRedisStorage],
-      useFactory: (storage: ThrottlerRedisStorage) => ({
+      inject: [getRedisConnectionToken()],
+      useFactory: (redis: Redis) => ({
         throttlers: [
           { name: 'default', ttl: 60000, limit: 60 },
           { name: 'strict', ttl: 60000, limit: 5 },
         ],
-        storage,
+        storage: new ThrottlerRedisStorage(redis),
       }),
     }),
   ],
