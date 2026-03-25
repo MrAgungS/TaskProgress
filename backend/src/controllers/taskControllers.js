@@ -1,5 +1,4 @@
 import express from "express"
-
 import { Tasks } from "../models/association.js"
 import authMiddleware from "../middleware/auth.middleware.js"
 import response from "../responses/response.js";
