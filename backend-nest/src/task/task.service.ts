@@ -20,6 +20,7 @@ export class TaskService {
   ) {}
 
   async getTasks(user_id: number) {
+    this.logger.info(`Fetching tasks for user_id: ${user_id}`);
     return this.prismaService.task.findMany({
       where: { user_id },
       orderBy: { createdAt: 'desc' },
@@ -27,6 +28,7 @@ export class TaskService {
   }
 
   async getTaskById(id: number, user_id: number) {
+    this.logger.info(`Fetching task id: ${id} for user_id: ${user_id}`);
     const task = await this.prismaService.task.findUnique({
       where: { id },
     });
@@ -36,6 +38,7 @@ export class TaskService {
   }
 
   async createTask(dto: CreateTaskDto, user_id: number) {
+    this.logger.info(`Creating task for user_id: ${user_id}`, { dto });
     const createDTO = this.validationService.validate(
       TaskValidation.CREATE,
       dto,
@@ -49,6 +52,9 @@ export class TaskService {
   }
 
   async updateTask(id: number, dto: UpdateTaskDto, user_id: number) {
+    this.logger.info(`Updating task id: ${id} for user_id: ${user_id}`, {
+      dto,
+    });
     const updateDTO = this.validationService.validate(
       TaskValidation.UPDATE,
       dto,
@@ -61,10 +67,11 @@ export class TaskService {
   }
 
   async deleteTask(id: number, user_id: number) {
+    this.logger.info(`Deleting task id: ${id} for user_id: ${user_id}`);
     await this.getTaskById(id, user_id);
     return this.prismaService.task.delete({
       where: { id },
     });
-    return { massage: 'Task deleted successfully' };
+    return { message: 'Task deleted successfully' };
   }
 }

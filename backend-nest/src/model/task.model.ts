@@ -6,14 +6,14 @@ export enum TaskPriority {
 
 export class CreateTaskDto {
   title: string;
-  description: string;
+  description: string | null;
   priority: TaskPriority;
-  due_date: Date;
+  due_date: Date | null;
 }
 
 export class UpdateTaskDto {
   title: string;
-  description: string;
+  description: string | null;
   priority: TaskPriority;
-  due_date: Date;
+  due_date: Date | null;
 }

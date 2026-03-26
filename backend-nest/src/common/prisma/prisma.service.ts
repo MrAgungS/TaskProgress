@@ -5,10 +5,7 @@ import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
 
 @Injectable()
-export class PrismaService
-  extends PrismaClient<Prisma.PrismaClientOptions>
-  implements OnModuleInit
-{
+export class PrismaService extends PrismaClient implements OnModuleInit {
   constructor(
     @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: Logger,
   ) {
@@ -23,20 +20,27 @@ export class PrismaService
         { emit: 'event', level: 'info' },
         { emit: 'event', level: 'query' },
       ],
-    } as any);
+    } satisfies Prisma.PrismaClientOptions);
   }
+
   async onModuleInit() {
-    this.$on('error' as never, (e) => {
-      this.logger.error(e);
+    this.$on('error' as never, (e: Prisma.LogEvent) => {
+      this.logger.error('Prisma error', {
+        message: e.message,
+        target: e.target,
+      });
     });
-    this.$on('warn' as never, (e) => {
-      this.logger.warn(e);
+    this.$on('warn' as never, (e: Prisma.LogEvent) => {
+      this.logger.warn('Prisma warn', { message: e.message, target: e.target });
     });
-    this.$on('info' as never, (e) => {
-      this.logger.log(e);
+    this.$on('info' as never, (e: Prisma.LogEvent) => {
+      this.logger.info('Prisma info', { message: e.message, target: e.target });
     });
-    this.$on('query' as never, (e) => {
-      this.logger.log(e);
+    this.$on('query' as never, (e: Prisma.QueryEvent) => {
+      this.logger.info('Prisma query', {
+        query: e.query,
+        duration: e.duration,
+      });
     });
 
     await this.$connect();
