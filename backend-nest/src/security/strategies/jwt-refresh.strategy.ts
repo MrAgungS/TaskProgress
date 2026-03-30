@@ -13,9 +13,9 @@ export class JwtRefreshStrategy extends PassportStrategy(
 ) {
   constructor() {
     super({
-      jwtFromRequest: ExtractJwt.fromBodyField('refresh_token'),
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: process.env.JWT_SECRET as string,
+      secretOrKey: process.env.JWT_REFRESH_SECRET as string,
       passReqToCallback: true,
     });
   }
@@ -23,10 +23,9 @@ export class JwtRefreshStrategy extends PassportStrategy(
   // Called after the token signature and expiry are verified by Passport.
   // Returns the user data that will be attached to req.user.
   validate(req: Request, payload: JwtPayload) {
-    const refreshToken = (req.body as { refresh_token?: string })
-      ?.refresh_token;
+    const authHeader = req.headers.authorization;
+    const refreshToken = authHeader?.split(' ')[1];
     if (!refreshToken) throw new UnauthorizedException();
-
     return { id: payload.sub, refreshToken };
   }
 }
