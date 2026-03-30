@@ -34,7 +34,7 @@ model Task {
   description String? @db.Text
   status Status @default(todo)
   priority Priority @default(low)
-  due_date DateTime?
+  due_date DateTime? @default(dbgenerated("NOW() + INTERVAL '7 days'"))
   user_id Int
   user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
