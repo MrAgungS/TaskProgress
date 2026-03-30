@@ -13,7 +13,7 @@ export const getTaskById = async (id) => {
   return res.data;
 };
 export const updateTask = async (id, payload) => {
-  const res = await api.put(`/tasks/${id}`, payload);
+  const res = await api.patch(`/tasks/${id}`, payload);
   return res.data;
 };
 export const deleteTask = async(id) =>{

@@ -1,8 +1,6 @@
 # Important
 
-This project is currently undergoing a migration from Express to NestJS.  
-It is still under consideration whether Express will be retained after the migration is completed.
-
+This project is almost finished migrating from Express to Nest, but there are still some bugs detected in the frontend that need to be fixed.
 ```
 The main focus is backend architecture and API design.
 Frontend design is not the priority and is implemented as best as possible to support testing and usage of the backend.
