@@ -13,7 +13,6 @@ TaskProgress is a fullstack task management application built with **Next.js** a
 It helps users manage tasks efficiently with secure authentication, task tracking, and role-based access control.
 
 ---
-
 # Docker Setup (Recommended)
 
 ## Prerequisites

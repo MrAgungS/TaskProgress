@@ -9,7 +9,7 @@ export const login = async (payload) => {
 };
 export const refreshToken = async() => {
   return axios.post(
-      "http://localhost:5000/api/auth/refresh",
+      "http://localhost:3030/api/auth/refresh",
       {},
       { withCredentials: true }
   );
