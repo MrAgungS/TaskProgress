@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
-  const [isTasks, setIsTasks] = useState([]); // ✅ array
+  const [isTasks, setIsTasks] = useState([]);
   const router = useRouter();
 
   useEffect(() => {

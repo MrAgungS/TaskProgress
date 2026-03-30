@@ -13,54 +13,6 @@ TaskProgress is a fullstack task management application built with **Next.js** a
 It helps users manage tasks efficiently with secure authentication, task tracking, and role-based access control.
 
 ---
-
-## Features
-
-- **Authentication**
-  - Register & Login
-  - JWT-based authentication
-  - Password hashing with bcrypt
-
-- **Task Management**
-  - Create, read, update, delete tasks
-  - Task status: To Do, In Progress, Done
-
-- **Role-Based Access Control**
-  - User & Admin roles
-  - Users can only access their own tasks
-  - Admin can manage all tasks
-
-- **Modern UI**
-  - Responsive layout
-  - Clean dashboard interface
-
----
-
-## Tech Stack
-
-### Backend (Express.js)
-
-- Node.js
-- Express.js
-- nodemon
-- dotenv
-- cors
-- MySQL2
-- rate-limit
-- cookie
-- cookie-parser
-- jwt
-- sequelize
-- bcrypt
-
-### Frontend (Next.js)
-
-- Next.js
-- Axios
-- Tailwind CSS
-- DaisyUi
-- motion
-
 # Docker Setup (Recommended)
 
 ## Prerequisites

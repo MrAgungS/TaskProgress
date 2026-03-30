@@ -22,7 +22,7 @@ export default function CreateTaskPage() {
 
     try {
       await createTask(form);
-      toast.success("Task created successfully 🚀");
+      toast.success("Task created successfully");
       router.push("/dashboard");
     } catch (error) {
       console.error(error);
