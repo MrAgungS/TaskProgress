@@ -1,13 +1,12 @@
 # Important
-
-This project is almost finished migrating from Express to Nest, but there are still some bugs detected in the frontend that need to be fixed.
 ```
 The main focus is backend architecture and API design.
 Frontend design is not the priority and is implemented as best as possible to support testing and usage of the backend.
 ```
+
 # TaskProgress
 
-TaskProgress is a fullstack task management application built with **Next.js** and **Express.js**.  
+TaskProgress is a fullstack task management application built with **Next.js** and **Nest.js**.  
 It helps users manage tasks efficiently with secure authentication, task tracking, and role-based access control.
 
 ---
@@ -59,7 +58,7 @@ Create a `.env` file in the `backend` folder:
 ## Run the Server
 
 ```bash
-npm run dev
+npm start:dev
 # or
 npm start
 ```
@@ -67,7 +66,7 @@ npm start
 The server will run at:
 
 ```
-http://localhost:5000
+http://localhost:3030
 ```
 
 # Frontend (Next.js)

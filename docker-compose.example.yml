@@ -1,45 +1,71 @@
 services:
-  mysql:
-    image: mysql:8.0
-    container_name: taskprogress_db
-    restart: always
+  postgres:
+    image: postgres:17-alpine
+    container_name: taskprogress-postgres
+    restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-    ports:
-      - "3307:3306"
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     volumes:
-      - mysql_data:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 5s
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
       timeout: 5s
-      retries: 10
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: taskprogress-redis
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   backend:
-    build: ./backend
-    container_name: taskprogress_api
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: taskprogress-backend
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379 
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+      PORT: 3030
+      FRONTEND_URL: ${FRONTEND_URL}
     ports:
-      - "5000:5000"
-    env_file:
-      - ./backend/.env.docker
+      - "3030:3030"
     depends_on:
-      mysql:
+      postgres:
         condition: service_healthy
-    command: >
-      sh -c "/wait-for-mysql.sh &&
-      npx sequelize-cli db:migrate &&
-      npm run start"
+      redis:
+        condition: service_healthy
 
   frontend:
-    build: ./frontend
-    container_name: taskprogress_web
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: taskprogress-frontend
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
     ports:
       - "3000:3000"
     depends_on:
       - backend
 
 volumes:
-  mysql_data:
+  postgres_data:
+  redis_data:
