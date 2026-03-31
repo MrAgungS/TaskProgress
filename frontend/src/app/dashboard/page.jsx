@@ -14,7 +14,7 @@ export default function Dashboard() {
     const fetchTasks = async () => {
       try {
         const res = await getTasks();
-        setIsTasks(res.data); 
+        setIsTasks(Array.isArray(res) ? res : []);
       } catch (err) {
         console.log(err);
       }
@@ -33,11 +33,10 @@ export default function Dashboard() {
         </button>
       </div>
       <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-        {isTasks.map(Tasks => (
+        {isTasks.map((Tasks) => (
           <TaskCard key={Tasks.id} Tasks={Tasks} />
         ))}
       </div>
     </div>
-    
   );
 }
