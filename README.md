@@ -6,8 +6,7 @@ Frontend design is not the priority and is implemented as best as possible to su
 
 # TaskProgress
 
-TaskProgress is a fullstack task management application built with **Next.js** and **Nest.js**.  
-It helps users manage tasks efficiently with secure authentication, task tracking, and role-based access control.
+TaskProgress was inspired by Google's Web Notes, so I decided to create my own simplified version, and I've completed the migration from Express to Nest. While it might not look much different, there are some improvements and new features.
 
 ---
 # Docker Setup (Recommended)
@@ -42,7 +41,7 @@ docker-compose down
 docker-compose up --build
 ```
 
-# Backend (Express.js)
+# Backend (Nest.js)
 
 ## Installation
 
