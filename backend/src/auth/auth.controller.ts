@@ -12,7 +12,7 @@ import { LoginUserDto, RegisterUserDto } from 'src/model/auth.model';
 import { Public } from 'src/security/decorators/public.decorator';
 import { JwtRefreshGuard } from 'src/security/guards/jwt-refresh.guard';
 
-// Remember that earlier we set JwtAuthGuard as APP_GUARD
+// Remember that earlier i set JwtAuthGuard as APP_GUARD
 // which means all routes are automatically protected and require a token. Well,
 // @Public() is the exception.
 @Controller('/api/auth')
